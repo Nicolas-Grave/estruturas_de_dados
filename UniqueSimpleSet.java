@@ -53,7 +53,7 @@ public class UniqueSimpleSet extends SimpleSet {
         UniqueSimpleSet intersectionSet = intersections(set);
         for (String value : intersectionSet.array) {
             unionSet.remove(value);
-        }        
+        }
         return unionSet;
     }
 }

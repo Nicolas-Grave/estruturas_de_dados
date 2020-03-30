@@ -14,7 +14,7 @@ public class TestDoubleList {
         System.out.println(list1.toString());
         System.out.println(list1.invertToString());
 
-        if (!list1.toString().equals("[3] <-> [2] <-> [1] <-> [0] <-> [-1] <-> [-2] <-> [-3]")) {
+        if (!list1.toString().equals("[4] <-> [3] <-> [2] <-> [1] <-> [0] <-> [-1] <-> [-2] <-> [-3]")) {
             System.out.println("To string list don't match");
         }
     }
