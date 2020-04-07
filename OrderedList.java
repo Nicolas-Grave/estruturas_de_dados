@@ -5,7 +5,7 @@ public class OrderedList extends DoubleList {
 
         if (n == null) {
             insertFirst(i);
-        } else if (last().element < i) {
+        } else if (last().element <= i) {
             insertLast(i);
         } else {
             while(n.element < i) { n = n.next; }
