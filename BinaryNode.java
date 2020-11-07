@@ -42,4 +42,31 @@ public class BinaryNode {
     if (this.right != null) children += (right.getChildrenCount() + 1);
     return children;
   }
+
+  public int getExternalChildrenCount() {
+    int children = 0;
+
+    if (this.left != null) {
+      if (this.left.isExternal()) {
+        children += 1;
+      } else {
+        children += this.left.getExternalChildrenCount();
+      }
+    }
+
+    if (this.right != null) {
+      if (this.right.isExternal()) {
+        children += 1;
+      } else {
+        children += this.right.getExternalChildrenCount();
+      }
+    }
+
+    return children;
+  }
+
+  public int getParentsCount() {
+    if (isRoot()) return 0;
+    return parent.getParentsCount() + 1;
+  }
 }
