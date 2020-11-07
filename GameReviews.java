@@ -32,8 +32,8 @@ public class GameReviews {
 
     Group() {
       this.reviews = new ArrayList<>();
-      reactionCount = new HashMap<String, Integer>();
-      scoreCount = new HashMap<Double, Integer>();
+      reactionCount = new HashMap<>();
+      scoreCount = new HashMap<>();
       totalScoreSum = 0;
     }
 
@@ -82,9 +82,7 @@ public class GameReviews {
       double arithmeticAverage = getArithmeticAverage();
 
       for(Double score : scoreCount.keySet()) {
-        for (int i = 0; i > scoreCount.get(score); i++) {
-          total += Math.pow((score - arithmeticAverage), 2);
-        };
+        total += Math.pow((score - arithmeticAverage), 2);
       }
 
       return Math.sqrt(total / reviews.size());
