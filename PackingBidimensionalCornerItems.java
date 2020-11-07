@@ -41,6 +41,20 @@ public class PackingBidimensionalCornerItems {
       return count;
     }
 
+    public boolean isBlank() {
+      boolean blank = true;
+      for (int line = 0; blank && line < grid.length; line++) {
+        for (int column = 0; blank && column < grid[line].length; column++) {
+          if (!grid[line][column].equals(BLANK) || !grid[line][column].equals(OBSTRUCTION)) blank = false;
+        }
+      }
+      return blank;
+    }
+
+    public boolean isCompleted() {
+      return blankSpacesCount() == 0;
+    }
+
     public void addObstruction(int line, int column) {
       grid[line][column] = OBSTRUCTION;
     }
@@ -79,9 +93,21 @@ public class PackingBidimensionalCornerItems {
     private boolean positionIsBlank(int line, int column) {
       return line >= 0 && column >= 0 && grid.length > 0 && (grid.length - 1) >= line && grid[0].length > 0 && (grid[0].length - 1) >= column && grid[line][column].equals(BLANK);
     }
+
+    public String toString() {
+      String data = "";
+      for (int line = 0; line < grid.length; line++) {
+        for (int column = 0; column < grid[line].length; column++) {
+          data += grid[line][column] + " ";
+        }
+        data += "\r\n";
+      }
+      return data;
+    }
   }
 
   static Grid bestGrid;
+  static int complete, partial, solution;
 
   public static void main(String[] args) {
     Grid grid = buildDefaultGrid();
@@ -96,53 +122,63 @@ public class PackingBidimensionalCornerItems {
     */
 
     System.out.println("Blank grid");
-    displayGrid(bestGrid);
+    System.out.println(bestGrid.toString());
 
     solve(grid, "A");
 
-    System.out.println();
     System.out.println("Solved grid");
-    displayGrid(bestGrid);
+    System.out.println(bestGrid.toString());
+
+    System.out.println("partial:  " + partial);
+    System.out.println("complete: " + complete);
+    System.out.println("solution: " + solution);
   }
 
   private static void solve(Grid grid, String letter) {
-    if (bestGrid.blankSpacesCount() > grid.blankSpacesCount()) {
-      bestGrid = grid;
+    boolean isSolution = false;
+
+    if (!grid.isBlank()) {
+      isSolution = true;
+
+      if (grid.isCompleted()) {
+        complete++;
+      } else {
+        partial++;
+      }
+
+      if (bestGrid.blankSpacesCount() > grid.blankSpacesCount()) bestGrid = grid;
     }
 
     Grid gridTopLeft = new Grid(grid);
     if (gridTopLeft.addItemCornerTopLeft(letter)) {
+      isSolution = false;
       solve(gridTopLeft, nextLetterFor(letter));
     }
 
     Grid gridTopRight = new Grid(grid);
     if (gridTopRight.addItemCornerTopRight(letter)) {
+      isSolution = false;
       solve(gridTopRight, nextLetterFor(letter));
     }
 
     Grid gridBottomRight = new Grid(grid);
     if (gridBottomRight.addItemCornerBottomRight(letter)) {
+      isSolution = false;
       solve(gridBottomRight, nextLetterFor(letter));
     }
 
     Grid gridBottomLeft = new Grid(grid);
     if (gridBottomLeft.addItemCornerBottomLeft(letter)) {
+      isSolution = false;
       solve(gridBottomLeft, nextLetterFor(letter));
     }
+
+    if (isSolution) solution++;
   }
 
   private static String nextLetterFor(String letter) {
     int charValue = letter.charAt(0);
     return String.valueOf( (char) (charValue + 1));
-  }
-
-  private static void displayGrid(Grid grid) {
-    for (int line = 0; line < grid.grid.length; line++) {
-      for (int column = 0; column < grid.grid[line].length; column++) {
-        System.out.print(grid.grid[line][column] + " ");
-      }
-      System.out.println();
-    }
   }
 
   private static Grid buildDefaultGrid() {
